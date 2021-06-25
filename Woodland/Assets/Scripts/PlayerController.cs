@@ -6,13 +6,16 @@ public class PlayerController : MonoBehaviour
 {
 
     Animator anim;
-    public int speed = 100;
+    Rigidbody2D rb;
+    public float speed = 100f;
+    public float jump_force = 500f;
     private bool facingRight = true;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -35,7 +38,10 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.LeftArrow)) anim.SetBool("running", false);
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) anim.SetBool("jumping", true);
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            anim.SetBool("jumping", true);
+            rb.AddForce(transform.up*jump_force);
+        }
         if (Input.GetKeyUp(KeyCode.UpArrow)) anim.SetBool("jumping", false);
     }
 
