@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     Animator anim;
+    public int speed = 100;
     private bool facingRight = true;
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
             if (!facingRight) {
                 Flip();
             }
+
         }
         if (Input.GetKeyUp(KeyCode.RightArrow)) anim.SetBool("running", false);
 
@@ -37,10 +39,19 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.UpArrow)) anim.SetBool("jumping", false);
     }
 
+    void FixedUpdate()
+    {
+        Vector2 position = transform.position;
+        float horizontal = Input.GetAxis("Horizontal");
+        position.x = position.x + speed * horizontal * Time.deltaTime;
+        transform.position = position;
+        
+    }
+
     void Flip(){
         facingRight = !facingRight;
 
-        Vector3 scale = transform.localScale;
+        Vector2 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
     }
