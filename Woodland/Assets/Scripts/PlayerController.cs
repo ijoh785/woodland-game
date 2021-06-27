@@ -21,28 +21,28 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+        // Hanles right arrow animations
+        if (Input.GetKey(KeyCode.RightArrow)) { // If right arrow is being pressed
             anim.SetBool("running", true);
             if (!facingRight) {
                 Flip();
             }
 
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow)) anim.SetBool("running", false);
+        if (Input.GetKeyUp(KeyCode.RightArrow)) anim.SetBool("running", false); // If right arrow has been lifted
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+        // Handles left arrow animations
+        if (Input.GetKey(KeyCode.LeftArrow)) { // If left arrow is being pressed
             anim.SetBool("running", true);
             if (facingRight) {
                 Flip();
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow)) anim.SetBool("running", false);
+        if (Input.GetKeyUp(KeyCode.LeftArrow)) anim.SetBool("running", false); // If left arrow has been lifted
 
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
             anim.SetBool("jumping", true);
-            rb.AddForce(transform.up*jump_force);
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow)) anim.SetBool("jumping", false);
     }
 
     void FixedUpdate()
@@ -60,5 +60,15 @@ public class PlayerController : MonoBehaviour
         Vector2 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    void OnCollisionEnter2D(Collision2D col){
+        if (col.gameObject.tag == "ground"){
+            anim.SetBool("jumping", false);
+        }
+    }
+
+    void Jump(){
+        rb.AddForce(transform.up*jump_force);
     }
 }
