@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Hanles right arrow animations
+        // Handles right arrow animations
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) { // If right arrow is being pressed
             anim.SetBool("running", true);
             if (!facingRight) {
@@ -38,11 +38,20 @@ public class PlayerController : MonoBehaviour
                 Flip();
             }
         }
+
+        // Handles jump animations
         if (Input.GetKeyUp(KeyCode.LeftArrow)|| Input.GetKeyUp(KeyCode.A)) anim.SetBool("running", false); // If left arrow has been lifted
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
             anim.SetBool("jumping", true);
         }
+
+        // Handles attack animations
+        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("running")) {
+            anim.SetBool("attacking", true);
+        }
+
+        
     }
 
     void FixedUpdate()
@@ -70,5 +79,9 @@ public class PlayerController : MonoBehaviour
 
     void Jump(){
         rb.AddForce(transform.up*jump_force);
+    }
+
+    void EndAttack(){
+        anim.SetBool("attacking", false);
     }
 }
