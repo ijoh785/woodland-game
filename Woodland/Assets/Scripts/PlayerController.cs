@@ -22,25 +22,25 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Hanles right arrow animations
-        if (Input.GetKey(KeyCode.RightArrow)) { // If right arrow is being pressed
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) { // If right arrow is being pressed
             anim.SetBool("running", true);
             if (!facingRight) {
                 Flip();
             }
 
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow)) anim.SetBool("running", false); // If right arrow has been lifted
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D)) anim.SetBool("running", false); // If right arrow has been lifted
 
         // Handles left arrow animations
-        if (Input.GetKey(KeyCode.LeftArrow)) { // If left arrow is being pressed
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) { // If left arrow is being pressed
             anim.SetBool("running", true);
             if (facingRight) {
                 Flip();
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow)) anim.SetBool("running", false); // If left arrow has been lifted
+        if (Input.GetKeyUp(KeyCode.LeftArrow)|| Input.GetKeyUp(KeyCode.A)) anim.SetBool("running", false); // If left arrow has been lifted
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) {
             anim.SetBool("jumping", true);
         }
     }
