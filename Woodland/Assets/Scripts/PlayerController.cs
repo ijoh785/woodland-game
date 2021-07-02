@@ -7,15 +7,25 @@ public class PlayerController : MonoBehaviour
 
     Animator anim;
     Rigidbody2D rb;
-    public float speed = 100f;
+    public ParticleSystem dirtEffect;
+    public float speed;
     public float jump_force = 500f;
     private bool facingRight = true;
+    bool grounded;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        // Initialise transform. Particle effects dont start without this for some reason?
+        Vector2 scale = transform.localScale;
+        scale.x *= 1;
+        transform.localScale = scale;
+
+        speed = 30f;
+        dirtEffect.Stop();
     }
 
     // Update is called once per frame
@@ -24,31 +34,36 @@ public class PlayerController : MonoBehaviour
         // Handles right arrow animations
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) { // If right arrow is being pressed
             anim.SetBool("running", true);
+            if(!dirtEffect.isPlaying && grounded) dirtEffect.Play();
             if (!facingRight) {
                 Flip();
             }
 
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D)) anim.SetBool("running", false); // If right arrow has been lifted
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A)){
+            anim.SetBool("running", false); // If right arrow has been lifted
+            if(dirtEffect.isPlaying) dirtEffect.Stop();
+        } 
 
         // Handles left arrow animations
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) { // If left arrow is being pressed
             anim.SetBool("running", true);
+            if(!dirtEffect.isPlaying && grounded) dirtEffect.Play();
             if (facingRight) {
                 Flip();
             }
         }
-
-        // Handles jump animations
-        if (Input.GetKeyUp(KeyCode.LeftArrow)|| Input.GetKeyUp(KeyCode.A)) anim.SetBool("running", false); // If left arrow has been lifted
 
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
             anim.SetBool("jumping", true);
         }
 
         // Handles attack animations
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("running")) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             anim.SetBool("attacking", true);
+            if(anim.GetBool("running")){
+                speed /= 2;
+            }
         }
 
         
@@ -74,6 +89,14 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col){
         if (col.gameObject.tag == "ground"){
             anim.SetBool("jumping", false);
+            anim.SetBool("falling", false);
+            grounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D col){
+        if (col.gameObject.tag == "ground"){
+            grounded = false;
         }
     }
 
@@ -83,5 +106,6 @@ public class PlayerController : MonoBehaviour
 
     void EndAttack(){
         anim.SetBool("attacking", false);
+        speed = 30f;
     }
 }

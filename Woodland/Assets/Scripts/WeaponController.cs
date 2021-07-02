@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    public int damage = 20;
 
-    void OnTriggerEnter2D(Collider2D col){
-        if (col.gameObject.tag == "Enemy"){
-            Debug.Log("Enemy hit");
-        }
+    int getDamage(){
+        return damage;
     }
 }
