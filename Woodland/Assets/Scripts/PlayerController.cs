@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jump_force = 500f;
     private bool facingRight = true;
-    bool grounded;
+    public float health;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
         scale.x *= 1;
         transform.localScale = scale;
 
+        health = 100f;
         speed = 30f;
         dirtEffect.Stop();
     }
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
         // Handles right arrow animations
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) { // If right arrow is being pressed
             anim.SetBool("running", true);
-            if(!dirtEffect.isPlaying && grounded) dirtEffect.Play();
+            if(!dirtEffect.isPlaying && !anim.GetBool("jumping")) dirtEffect.Play();
             if (!facingRight) {
                 Flip();
             }
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
         // Handles left arrow animations
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) { // If left arrow is being pressed
             anim.SetBool("running", true);
-            if(!dirtEffect.isPlaying && grounded) dirtEffect.Play();
+            if(!dirtEffect.isPlaying && !anim.GetBool("jumping")) dirtEffect.Play();
             if (facingRight) {
                 Flip();
             }
@@ -90,13 +91,12 @@ public class PlayerController : MonoBehaviour
         if (col.gameObject.tag == "ground"){
             anim.SetBool("jumping", false);
             anim.SetBool("falling", false);
-            grounded = true;
         }
     }
 
     void OnCollisionExit2D(Collision2D col){
         if (col.gameObject.tag == "ground"){
-            grounded = false;
+            if(dirtEffect.isPlaying) dirtEffect.Stop();
         }
     }
 
