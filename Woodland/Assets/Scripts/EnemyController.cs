@@ -8,16 +8,18 @@ public class EnemyController : MonoBehaviour
     Renderer r;
 
     void Start(){
-        health = 100;
+        health = 200;
         r = gameObject.GetComponent<Renderer>();
     }
 
     void OnTriggerEnter2D(Collider2D col){
         if (col.gameObject.tag == "weapon"){
+
             int damage = col.gameObject.GetComponent<WeaponController>().damage;
             health -= damage;
             StartCoroutine(damageColor());
             Debug.Log(health+"/200");
+
             if (health <= 0){
                 Destroy(gameObject);
             }
