@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jump_force = 500f;
     private bool facingRight = true;
-    public float health;
+    public float maxHealth = 100f;
+    public float currentHealth = 100f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,6 @@ public class PlayerController : MonoBehaviour
         scale.x *= 1;
         transform.localScale = scale;
 
-        health = 100f;
         speed = 30f;
         dirtEffect.Stop();
     }
@@ -100,6 +100,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D col){
+        if (col.gameObject.tag == "damage zone"){
+            currentHealth -= 10f;
+            Debug.Log(currentHealth + "/" + maxHealth);
+        }
+    }
+
     void Jump(){
         rb.AddForce(transform.up*jump_force);
     }
@@ -108,4 +115,5 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("attacking", false);
         speed = 30f;
     }
+
 }

@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    public int damage = 20;
+    public float damage = 20f;
 
 }

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public int health;
+    public float health;
     Renderer r;
 
     void Start(){
-        health = 200;
+        health = 200f;
         r = gameObject.GetComponent<Renderer>();
     }
 
     void OnTriggerEnter2D(Collider2D col){
         if (col.gameObject.tag == "weapon"){
 
-            int damage = col.gameObject.GetComponent<WeaponController>().damage;
+            float damage = col.gameObject.GetComponent<WeaponController>().damage;
             health -= damage;
             StartCoroutine(damageColor());
             Debug.Log(health+"/200");

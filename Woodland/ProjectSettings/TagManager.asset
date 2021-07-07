@@ -8,6 +8,7 @@ TagManager:
   - surface
   - weapon
   - Enemy
+  - damage zone
   layers:
   - Default
   - TransparentFX
